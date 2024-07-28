@@ -34,7 +34,6 @@ def get_vscode_extension_stats(extension_id):
         print(response.text)
         return None
 
-# Replace with your VSCode theme's extension ID
 extension_id = "blossomtheme.blossomtheme"
 
 downloads = get_vscode_extension_stats(extension_id)

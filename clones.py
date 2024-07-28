@@ -33,7 +33,6 @@ def get_clone_count(owner, repo, token, days=14):
         print(response.text)
         return None
 
-# Example usage
 owner = "BlossomTheme"
 repo = "MusicBee"
 token = ""
