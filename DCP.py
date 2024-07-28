@@ -21,9 +21,13 @@ def get_div_content(url, div_id):
     else:
         return f"Failed to retrieve the webpage. Status code: {response.status_code}"
 
-# Example usage
-url = "https://packagecontrol.io/packages/Blossom%20Theme"
-div_id = "installs"
+# VSCode
+url = "https://marketplace.visualstudio.com/items?itemName=blossomtheme.blossomtheme"
+div_id = "ux-item-rating"
+
+# Subl
+# url = "https://packagecontrol.io/packages/Blossom%20Theme"
+# div_id = "installs"
 
 content = get_div_content(url, div_id)
 print(content)
