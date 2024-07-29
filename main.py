@@ -181,10 +181,10 @@ def main():
         print("## Repository Clones")
         file.write("## Repository Clones \n")
         repo_list = get_repo_list()
-        try:
-            SOME_SECRET = os.environ["SOME_SECRET"]
-        except KeyError:
-            SOME_SECRET = "Token not available!"
+        # try:
+        #     SOME_SECRET = os.environ["SOME_SECRET"]
+        # except KeyError:
+        #     SOME_SECRET = "Token not available!"
 
         token = SOME_SECRET
         owner = "BlossomTheme"
@@ -198,7 +198,7 @@ def main():
         print(tabulate(table, headers, tablefmt="github"))
         file.write(tabulate(table, headers, tablefmt="github"))
 
-        
+
         file.close()
         
 
