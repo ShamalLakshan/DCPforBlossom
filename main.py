@@ -5,6 +5,15 @@ from tabulate import tabulate
 import os
 
 
+def banner():
+    print("d8888b. db       .d88b.  .d8888. .d8888.  .d88b.  .88b  d88. d888888b db   db d88888b .88b  d88. d88888b ")
+    print("88  `8D 88      .8P  Y8. 88'  YP 88'  YP .8P  Y8. 88'YbdP`88 `~~88~~' 88   88 88'     88'YbdP`88 88'     ")
+    print("88oooY' 88      88    88 `8bo.   `8bo.   88    88 88  88  88    88    88ooo88 88ooooo 88  88  88 88ooooo ")
+    print("88~~~b. 88      88    88   `Y8b.   `Y8b. 88    88 88  88  88    88    88~~~88 88~~~~~ 88  88  88 88~~~~~ ")
+    print("88   8D 88booo. `8b  d8' db   8D db   8D `8b  d8' 88  88  88    88    88   88 88.     88  88  88 88.     ")
+    print("Y8888P' Y88888P  `Y88P'  `8888Y' `8888Y'  `Y88P'  YP  YP  YP    YP    YP   YP Y88888P YP  YP  YP Y88888P ")
+
+
 def get_vscode_extension_stats(extension_id="blossomtheme.blossomtheme"):
     url = f"https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery"
     headers = {
@@ -131,7 +140,13 @@ def main():
     filename = ("./logs/" + (datetime.now().strftime("%d") + "-" + datetime.now().strftime("%m") + "-" + datetime.now().strftime("%Y")) + ".md")
     file = open(filename, "a") 
 
+    print("# Blossom Theme Stats \n \n")
     file.write("# Blossom Theme Stats \n \n")
+
+    banner()
+
+    print("Date: " + (datetime.now().strftime("%d") + "-" + datetime.now().strftime("%m") + "-" + datetime.now().strftime("%Y")) + "\n \n")
+    file.write("Date: " + (datetime.now().strftime("%d") + "-" + datetime.now().strftime("%m") + "-" + datetime.now().strftime("%Y")) + "\n \n")
 
     # Organization Information
     print("## Organization Stats")
@@ -181,10 +196,10 @@ def main():
         print("## Repository Clones")
         file.write("## Repository Clones \n")
         repo_list = get_repo_list()
-        # try:
-        #     SOME_SECRET = os.environ["SOME_SECRET"]
-        # except KeyError:
-        #     SOME_SECRET = "Token not available!"
+        try:
+            SOME_SECRET = os.environ["SOME_SECRET"]
+        except KeyError:
+            SOME_SECRET = "Token not available!"
 
         token = SOME_SECRET
         owner = "BlossomTheme"
