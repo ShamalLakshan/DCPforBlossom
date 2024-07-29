@@ -18,9 +18,23 @@ def get_reop_list():
     else:
         print(f"Failed to retrieve repositories. Status code: {response.status_code}")
 
+def get_org_info():
+    repo_url = "https://api.github.com/users/BlossomTheme"
+    information = {}
+
+    response = requests.get(repo_url)
+    
+    if response.status_code == 200:
+        stats = response.json()
+        for info in stats:
+            information[info] = (stats[info])
+        return information
+
+    else:
+        print(f"Failed to retrieve repositories. Status code: {response.status_code}")
 
 def main():
-    repo_list = get_reop_list()
-    print(repo_list)
+    info = get_org_info()
+    print(info)
 
 main()
