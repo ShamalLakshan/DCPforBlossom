@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from tabulate import tabulate
 
 
+
 def get_vscode_extension_stats(extension_id="blossomtheme.blossomtheme"):
     url = f"https://marketplace.visualstudio.com/_apis/public/gallery/extensionquery"
     headers = {
@@ -60,6 +61,24 @@ def get_sublime_package_stats(url, div_id):
             return f"No div found with id '{div_id}'"
     else:
         return f"Failed to retrieve the webpage. Status code: {response.status_code}"
+
+
+def get_repo_list():
+    repo_url = "https://api.github.com/orgs/BlossomTheme/repos"
+    repo_list = []
+
+    response = requests.get(repo_url)
+    
+    if response.status_code == 200:
+        repositories = response.json()
+        for repo in repositories:
+            repo_list.append(repo["name"])
+    # After this add code to do fun and useful things with the repository information!
+        return repo_list
+
+    # If status_code is not 200, something is wrong with our request
+    else:
+        print(f"Failed to retrieve repositories. Status code: {response.status_code}")
 
 
 def get_clone_count(owner, repo, token, days=14):
@@ -129,7 +148,11 @@ def main():
         file.write(tabulate(table, headers, tablefmt="github"))
 
         print()
-        file.write("\n")
+        file.write("\n \n")
+
+
+
+
 
         file.close()
         
