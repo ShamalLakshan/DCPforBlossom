@@ -133,6 +133,19 @@ def main():
 
     file.write("# Blossom Theme Stats \n \n")
 
+    # Organization Information
+    print("## Organization Stats")
+    file.write("## Organization Stats \n")
+    info = get_org_info()
+    table = []
+    for stat in info:
+        row = [stat, info[stat]]
+        table.append(row)
+
+    print(tabulate(table, headers = ["Stat", "Info"], tablefmt="github"))
+    file.write(tabulate(table, headers = ["Stat", "Info"], tablefmt="github"))
+    file.write("\n \n")
+
     # VS Code stats
     vscode_downloads = get_vscode_extension_stats()
     if vscode_downloads is not None:

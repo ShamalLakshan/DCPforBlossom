@@ -1,5 +1,5 @@
 import requests
-
+from tabulate import tabulate
 
 def get_reop_list():
     repo_url = "https://api.github.com/orgs/BlossomTheme/repos"
@@ -35,6 +35,12 @@ def get_org_info():
 
 def main():
     info = get_org_info()
-    print(info)
+    table = []
+    for stat in info:
+        row = [stat, info[stat]]
+        table.append(row)
 
-main()
+    print(tabulate(table, headers = ["Stat", "Info"], tablefmt="github"))
+
+if __name__ == "__main__":
+    main()
