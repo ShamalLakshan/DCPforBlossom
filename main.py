@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
+from tabulate import tabulate
 
 
 def get_vscode_extension_stats(extension_id="blossomtheme.blossomtheme"):
@@ -52,7 +53,9 @@ def get_sublime_package_stats(url, div_id):
         
         if target_div:
             # Return the text content of the div
-            return target_div.text.strip().split(" ")
+            downloads = [target_div.text.strip().split(" ")[4], target_div.text.strip().split(" ")[8], target_div.text.strip().split(" ")[13], target_div.text.strip().split(" ")[18]]
+
+            return downloads
         else:
             return f"No div found with id '{div_id}'"
     else:
@@ -96,15 +99,27 @@ def main():
     # VS Code stats
     vscode_downloads = get_vscode_extension_stats()
     if vscode_downloads is not None:
-        print(f"Number of downloads for your VSCode theme: {vscode_downloads}")
+        print()
+        print("# VS Code Stats")
+        headers = ["Type", "Amount"]
+        table = [["Total", vscode_downloads]]
+        print(tabulate(table, headers, tablefmt="github"))
+
+    print()
 
     # Sublime Package Stats
     sublime_downloads = get_sublime_package_stats(url = "https://packagecontrol.io/packages/Blossom%20Theme", div_id = "installs")
     if sublime_downloads is not None:
-        print(f"Number of downloads for your Sublime theme: {sublime_downloads}")
+        print()
+        print("# Sublime Stats")
+        headers = ["Type", "Amount"]
+        table = [["Total", sublime_downloads[0]], ["Windows", sublime_downloads[1]], ["Mac", sublime_downloads[2]], ["Linux", sublime_downloads[3]]]
+        print(tabulate(table, headers, tablefmt="github"))
 
-    # Clone count
-    
+        print()
+
+
+        
 
 if __name__ == "__main__":
     main()
