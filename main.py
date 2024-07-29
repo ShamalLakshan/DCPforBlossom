@@ -59,6 +59,39 @@ def get_sublime_package_stats(url, div_id):
         return f"Failed to retrieve the webpage. Status code: {response.status_code}"
 
 
+def get_clone_count(owner, repo, token, days=14):
+    # GitHub API endpoint for clone statistics
+    url = f"https://api.github.com/repos/{owner}/{repo}/traffic/clones"
+    
+    # Headers for authentication
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    
+    # Make the API request
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        
+        # Calculate the date range
+        end_date = datetime.now()
+        start_date = end_date - timedelta(days=days)
+        
+        # Filter and sum clones within the date range
+        total_clones = sum(
+            item['count'] for item in data['clones']
+            if start_date <= datetime.strptime(item['timestamp'], "%Y-%m-%dT%H:%M:%SZ") <= end_date
+        )
+        
+        return total_clones
+    else:
+        print(f"Error: {response.status_code}")
+        print(response.text)
+        return None
+
+
 def main():
     # VS Code stats
     vscode_downloads = get_vscode_extension_stats()
@@ -69,6 +102,9 @@ def main():
     sublime_downloads = get_sublime_package_stats(url = "https://packagecontrol.io/packages/Blossom%20Theme", div_id = "installs")
     if sublime_downloads is not None:
         print(f"Number of downloads for your Sublime theme: {sublime_downloads}")
+
+    # Clone count
+    
 
 if __name__ == "__main__":
     main()
