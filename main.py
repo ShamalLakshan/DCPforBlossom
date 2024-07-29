@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from tabulate import tabulate
+import os
 
 
 def get_vscode_extension_stats(extension_id="blossomtheme.blossomtheme"):
@@ -103,7 +104,6 @@ def get_clone_count(owner, repo, token, days=14):
             item['count'] for item in data['clones']
             if start_date <= datetime.strptime(item['timestamp'], "%Y-%m-%dT%H:%M:%SZ") <= end_date
         )
-        
         return total_clones
     else:
         print(f"Error: {response.status_code}")
@@ -176,10 +176,29 @@ def main():
         print()
         file.write("\n \n")
 
+        # Repository clones
+        print()
+        print("## Repository Clones")
+        file.write("## Repository Clones \n")
+        repo_list = get_repo_list()
+        try:
+            SOME_SECRET = os.environ["SOME_SECRET"]
+        except KeyError:
+            SOME_SECRET = "Token not available!"
 
+        token = SOME_SECRET
+        owner = "BlossomTheme"
+        table = []
 
+        for repo in repo_list:
+            num_of_clones = get_clone_count(owner, repo, token)
+            repo_and_clones = [repo, num_of_clones]
+            table.append(repo_and_clones)
+        
+        print(tabulate(table, headers, tablefmt="github"))
+        file.write(tabulate(table, headers, tablefmt="github"))
 
-
+        
         file.close()
         
 
