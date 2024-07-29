@@ -96,29 +96,42 @@ def get_clone_count(owner, repo, token, days=14):
 
 
 def main():
+    filename = ("./logs/" + (datetime.now().strftime("%d") + "-" + datetime.now().strftime("%m") + "-" + datetime.now().strftime("%Y")) + ".md")
+    file = open(filename, "a") 
+
+    file.write("# Blossom Theme Stats \n \n")
+
     # VS Code stats
     vscode_downloads = get_vscode_extension_stats()
     if vscode_downloads is not None:
         print()
-        print("# VS Code Stats")
+        print("## VS Code Stats")
+        file.write("## VS Code Stats \n")
+
         headers = ["Type", "Amount"]
-        table = [["Total", vscode_downloads]]
+        table = [["Total Downloads", vscode_downloads]]
+
         print(tabulate(table, headers, tablefmt="github"))
+        file.write(tabulate(table, headers, tablefmt="github"))
 
     print()
+    file.write("\n \n")
 
     # Sublime Package Stats
     sublime_downloads = get_sublime_package_stats(url = "https://packagecontrol.io/packages/Blossom%20Theme", div_id = "installs")
     if sublime_downloads is not None:
         print()
-        print("# Sublime Stats")
+        print("## Sublime Stats")
+        file.write("## Sublime Stats \n")
         headers = ["Type", "Amount"]
-        table = [["Total", sublime_downloads[0]], ["Windows", sublime_downloads[1]], ["Mac", sublime_downloads[2]], ["Linux", sublime_downloads[3]]]
+        table = [["Total Downloads", sublime_downloads[0]], ["Windows Downloads", sublime_downloads[1]], ["Mac Downloads", sublime_downloads[2]], ["Linux Downloads", sublime_downloads[3]]]
         print(tabulate(table, headers, tablefmt="github"))
+        file.write(tabulate(table, headers, tablefmt="github"))
 
         print()
+        file.write("\n")
 
-
+        file.close()
         
 
 if __name__ == "__main__":
