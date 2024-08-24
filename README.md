@@ -2,6 +2,12 @@ Blossom Theme Stats
 
 This script generates statistics for the Blossom Theme, a popular theme for various code editors and IDEs. The script collects data from various sources, including GitHub, Visual Studio Code Marketplace, and Package Control.
 
+## This is only a development version of the script. Script successfully deployed and running privately at [@BlossomThemeAdmin](https://github.com/BlossomThemeAdmin) 
+
+TODO
+
+    Add Web skin download statistics
+
 Requirements
 
     Python 3.x
