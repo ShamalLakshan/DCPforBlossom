@@ -71,6 +71,31 @@ def get_sublime_package_stats(url, div_id):
     else:
         return f"Failed to retrieve the webpage. Status code: {response.status_code}"
 
+def get_blender_stats(url, class_id):
+    # Send a GET request to the URL
+    response = requests.get(url)
+    
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the HTML content
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        target_class = soup.find_all("div", class_=class_id)
+        
+        downloads = None
+        for div in target_class:
+            dt = div.find("dt")
+            if dt and dt.get_text(strip=True) == "Downloads":
+                downloads = div.find("dd").get_text(strip=True)
+                break
+
+        if downloads:
+            return downloads
+        else:
+            return f"No div found with id '{class_id}'"
+    else:
+        return f"Failed to retrieve the webpage. Status code: {response.status_code}"
+
 
 def get_repo_list():
     repo_url = "https://api.github.com/orgs/BlossomTheme/repos"
@@ -191,31 +216,53 @@ def main():
         print()
         file.write("\n \n")
 
-        # Repository clones
+    # Blender Download Stats
+    blender_downloads = get_blender_stats(url = "https://extensions.blender.org/themes/blossom-theme/", class_id="dl-col")
+    if blender_downloads is not None:
         print()
-        print("## Repository Clones")
-        file.write("## Repository Clones \n")
-        repo_list = get_repo_list()
-        try:
-            SOME_SECRET = os.environ["SOME_SECRET"]
-        except KeyError:
-            SOME_SECRET = "Token not available!"
+        print("## Blender Stats")
+        file.write("## Blender Stats \n")
 
-        token = SOME_SECRET
-        owner = "BlossomTheme"
-        table = []
+        headers = ["Type", "Amount"]
+        table = [["Total Downloads", blender_downloads]]
 
-        for repo in repo_list:
-            num_of_clones = get_clone_count(owner, repo, token)
-            repo_and_clones = [repo, num_of_clones]
-            table.append(repo_and_clones)
-        
         print(tabulate(table, headers, tablefmt="github"))
         file.write(tabulate(table, headers, tablefmt="github"))
 
+        print()
+        file.write("\n \n")
 
-        file.close()
+    # Total outside downloads
+    print()
+    print("## Total Outside Downloads")
+    file.write("## Total Outside Downloads \n")
+    download_count = (int(blender_downloads) + int(vscode_downloads) + int(sublime_downloads[0]))
+    headers = ["Type", "Amount"]
+    table = [["Total Downloads", download_count]]
+
+    print(tabulate(table, headers, tablefmt="github"))
+    file.write(tabulate(table, headers, tablefmt="github"))
+
+    # Repository clones
+    print()
+    print("## Repository Clones")
+    file.write("## Repository Clones \n")
+    repo_list = get_repo_list()
+    try:
+        SOME_SECRET = os.environ["SOME_SECRET"]
+    except KeyError:
+        SOME_SECRET = "Token not available!"
+    token = SOME_SECRET
+    owner = "BlossomTheme"
+    table = []
+    for repo in repo_list:
+        num_of_clones = get_clone_count(owner, repo, token)
+        repo_and_clones = [repo, num_of_clones]
+        table.append(repo_and_clones)
+    
+    print(tabulate(table, headers, tablefmt="github"))
+    file.write(tabulate(table, headers, tablefmt="github"))
+    file.close()
         
 
-if __name__ == "__main__":
-    main()
+main()
